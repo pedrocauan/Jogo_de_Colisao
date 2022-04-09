@@ -1,17 +1,44 @@
 
 //Variaveis do jogo
-let ALTURA, LARGURA //Largura e altura da tela do jogador.
+let ALTURA, LARGURA //Largura e altura do cenário. (--> NÃO MEXER <--)
 let canvas; //Canvas é o cenário do jogo
 let principal;  //tag main
 let ctx; //Tipo de cenário (2d)
 let frames = 0; //Frames do jogo
+const corCenario = "#50beff";
+const corChao = "#ffdf70";
+const corPersonagem = "#ff4e4e";
+
+
+//Aqui serao criados todos os objetos do cenário. ex: Chão, personagem, obstaculo
+
+chao = {
+    y: 550, //eixo y do cartesiano
+    altura: 50, //altura em px no plano cartesiano
+    cor:  corChao,
+    desenha: function(){
+        ctx.fillStyle = this.cor; //muda a cor do chao
+        ctx.fillRect(0, this.y, LARGURA, this.altura); //coloca o chao no cenario
+    }
+},
+
+personagem = {
+    x: 50, //eixo x do cartesiano
+    y: 0, //eixo y do cartesiano
+    altura: 50, //altura do personagem
+    largura: 50, //largura do personagem
+    cor: corPersonagem,
+    desenha: function(){
+        ctx.fillStyle = this.cor; //muda cor do personagem
+        ctx.fillRect(this.x, this.y, this.largura, this.altura); //coloca o personagem no cenário
+    }
+}
+
 
 // ======= COMPONENTES DE PROGRAMAÇÃO ======
 
-
-
-function criaCenario() {
-    
+//---> NÃO MEXER <-----
+function criaCenario() {  
     tamanhoCenario();
     canvas = document.createElement("canvas"); // a tag canvas é o cenário do jogo
     canvas.width = LARGURA;
@@ -24,7 +51,7 @@ function criaCenario() {
     
 
 }
-
+//----> NÃO MEXER EM HIPOTESE ALGUMA <------
 function tamanhoCenario() {
     //Define o tamanho do canvas
     ALTURA = window.innerHeight;
@@ -37,8 +64,7 @@ function tamanhoCenario() {
     }
 }
 
-
-// =========  COMPONENTES DO JOGO DO JOGO ===========
+// =========  COMPONENTES DO JOGO ===========
 
 //Valida se o jogador clicou na tela.
 function clique(evento) {
@@ -50,13 +76,22 @@ function atualiza() {
     frames++;
 }
 
-
-//Aqui serao criados todos os objetos do cenário. ex: Chão, personagem, obstaculo
-function desenha() {
+function pintaCenario() {
+    
+    ctx.fillStyle = corCenario; //pinta o cenário
+    
     /*eixo X e Y do plano cartesiano,começa do canto superior esquerdo(0,0) 
     e vai até o inferior direito do cenario(LARGURA, ALTURA)*/
     ctx.fillRect(0,0, LARGURA, ALTURA);
-    ctx.fillStyle = "#50beff"; //cor do cenário
+    
+}
+
+//Desenha os objetos do cenário no jogo
+function desenha() {
+    pintaCenario();
+    chao.desenha();
+    personagem.desenha();
+    
 }
 //Repete o jogo para que ele nao suma
 function roda() {
@@ -64,10 +99,10 @@ function roda() {
     desenha();
     window.requestAnimationFrame(roda);
 }
-
+//Inicia o jogo
 function main() {  
     criaCenario();
     roda();
 }
 
-main();
+main();// ----> NÃO APAGAR ESTA LINHA <------
