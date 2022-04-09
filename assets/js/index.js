@@ -8,7 +8,7 @@ let frames = 0; //Frames do jogo
 
 // ======= COMPONENTES DE PROGRAMAÇÃO ======
 
-//Valida se o jogador clicou na tela.
+
 
 function criaCenario() {
     
@@ -21,7 +21,7 @@ function criaCenario() {
     ctx = canvas.getContext("2d"); //Diz que o cenário vai ser 2d
     principal = document.createElement("main"); //cria a tag main pra centralizar o cenário na tela
     document.body.appendChild(principal).appendChild(canvas); //Coloca a tag canvas dentro da main
-    document.addEventListener("mousedown", clique); //verifica se o jogador clicou na tela
+    
 
 }
 
@@ -40,29 +40,34 @@ function tamanhoCenario() {
 
 // =========  COMPONENTES DO JOGO DO JOGO ===========
 
+//Valida se o jogador clicou na tela.
 function clique(evento) {
-    alert("clicou");
 
 }
-
-//Repete o jogo para que ele nao suma depois de clicarmos pela primeira vez
-function roda() {
-
-}
-
 //atualiza o status do personagem
 function atualiza() {
-
+    document.addEventListener("mousedown", clique); //repete o evento de click do usuario
+    frames++;
 }
 
-//Aqui serao criado todos os objetos do cenário. ex: Chão, personagem, obstaculo
+
+//Aqui serao criados todos os objetos do cenário. ex: Chão, personagem, obstaculo
 function desenha() {
-
+    /*eixo X e Y do plano cartesiano,começa do canto superior esquerdo(0,0) 
+    e vai até o inferior direito do cenario(LARGURA, ALTURA)*/
+    ctx.fillRect(0,0, LARGURA, ALTURA);
+    ctx.fillStyle = "#50beff"; //cor do cenário
+}
+//Repete o jogo para que ele nao suma
+function roda() {
+    atualiza();
+    desenha();
+    window.requestAnimationFrame(roda);
 }
 
-function main() {
-   
+function main() {  
     criaCenario();
+    roda();
 }
 
 main();
