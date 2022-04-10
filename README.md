@@ -6,3 +6,4 @@ Um jogo de colisão feito em javascript puro
 - [x] Criação das funções que rodam o cenário e pintando o fundo.
 - [x] Criando os objetos: chão e personagem.
 - [x] Desenhando o chão e o personagem na tela.
+- [x] Criando colisão do personagem com o chão e física do personagem.
