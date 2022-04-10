@@ -8,6 +8,7 @@ let frames = 0; //Frames do jogo
 const corCenario = "#50beff";
 const corChao = "#ffdf70";
 const corPersonagem = "#ff4e4e";
+const gravidadePersonagem = 1.5; //altera a velocidade do pulo
 
 
 //Aqui serao criados todos os objetos do cenário. ex: Chão, personagem, obstaculo
@@ -27,7 +28,22 @@ personagem = {
     y: 0, //eixo y do cartesiano
     altura: 50, //altura do personagem
     largura: 50, //largura do personagem
+    
     cor: corPersonagem,
+    // ===== Física do personagem ======
+    //Velocidade = gravidade
+    gravidade: gravidadePersonagem, //aceleração (o quão rapido ele pula e cai)
+    velocidade: 0, //velocidade em que ele cai constantemente
+    atualizaStatus: function(){
+        //Formula pra fazer o movimento dele pulando
+        this.velocidade += this.gravidade;
+        this.y += this.velocidade;
+
+        //Faz com que o personagem não caio pra baixo do chão (colisão)
+        if(this.y > chao.y - this.altura)
+            this.y = chao.y - this.altura; //posiciona o personagem acima do chão (COLISÃO)
+    },
+
     desenha: function(){
         ctx.fillStyle = this.cor; //muda cor do personagem
         ctx.fillRect(this.x, this.y, this.largura, this.altura); //coloca o personagem no cenário
@@ -74,6 +90,7 @@ function clique(evento) {
 function atualiza() {
     document.addEventListener("mousedown", clique); //repete o evento de click do usuario
     frames++;
+    personagem.atualizaStatus();
 }
 
 function pintaCenario() {
