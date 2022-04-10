@@ -5,6 +5,7 @@ let canvas; //Canvas é o cenário do jogo
 let principal;  //tag main
 let ctx; //Tipo de cenário (2d)
 let frames = 0; //Frames do jogo
+const maxPulos = 3; //Quantos pulos o personagem pode dar no jogo
 const corCenario = "#50beff";
 const corChao = "#ffdf70";
 const corPersonagem = "#ff4e4e";
@@ -28,26 +29,39 @@ personagem = {
     y: 0, //eixo y do cartesiano
     altura: 50, //altura do personagem
     largura: 50, //largura do personagem
-    
     cor: corPersonagem,
-    // ===== Física do personagem ======
-    //Velocidade = gravidade
-    gravidade: gravidadePersonagem, //aceleração (o quão rapido ele pula e cai)
-    velocidade: 0, //velocidade em que ele cai constantemente
-    atualizaStatus: function(){
-        //Formula pra fazer o movimento dele pulando
-        this.velocidade += this.gravidade;
-        this.y += this.velocidade;
-
-        //Faz com que o personagem não caio pra baixo do chão (colisão)
-        if(this.y > chao.y - this.altura)
-            this.y = chao.y - this.altura; //posiciona o personagem acima do chão (COLISÃO)
-    },
 
     desenha: function(){
         ctx.fillStyle = this.cor; //muda cor do personagem
         ctx.fillRect(this.x, this.y, this.largura, this.altura); //coloca o personagem no cenário
-    }
+    },
+
+    // ===== Física do personagem ======
+    gravidade: gravidadePersonagem, //aceleração (o quão rapido ele pula e cai)
+    velocidade: 0, //movimento constante
+    forcaPulo: -15,
+    qntPulos: 0,
+    atualizaStatus: function(){
+        
+        //move o personagem pro chão
+        this.velocidade += this.gravidade;
+        this.y += this.velocidade;
+
+        //colisão do personagem com o chão
+        if(this.y > chao.y - this.altura)
+            this.y = chao.y - this.altura; 
+    },
+
+    pula: function() {
+        //pula  no máximo 3 vezes
+        if(this.qntPulos <= maxPulos){
+            this.velocidade = this.forcaPulo;
+            this.qntPulos++;
+        }
+        else   
+            this.qntPulos = 0;//reseta os pulos pra que o jogador possa pular novamente
+    },
+
 }
 
 
@@ -84,6 +98,7 @@ function tamanhoCenario() {
 
 //Valida se o jogador clicou na tela.
 function clique(evento) {
+    personagem.pula();
 
 }
 //atualiza o status do personagem
@@ -96,9 +111,6 @@ function atualiza() {
 function pintaCenario() {
     
     ctx.fillStyle = corCenario; //pinta o cenário
-    
-    /*eixo X e Y do plano cartesiano,começa do canto superior esquerdo(0,0) 
-    e vai até o inferior direito do cenario(LARGURA, ALTURA)*/
     ctx.fillRect(0,0, LARGURA, ALTURA);
     
 }
