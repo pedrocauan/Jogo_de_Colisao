@@ -14,7 +14,7 @@ const gravidadePersonagem = 1.5; //altera a velocidade do pulo
 
 //Aqui serao criados todos os objetos do cenário. ex: Chão, personagem, obstaculo
 
-chao = {
+const chao = {
     y: 550, //eixo y do cartesiano
     altura: 50, //altura em px no plano cartesiano
     cor:  corChao,
@@ -22,9 +22,9 @@ chao = {
         ctx.fillStyle = this.cor; //muda a cor do chao
         ctx.fillRect(0, this.y, LARGURA, this.altura); //coloca o chao no cenario
     }
-},
+}
 
-personagem = {
+const personagem = {
     x: 50, //eixo x do cartesiano
     y: 0, //eixo y do cartesiano
     altura: 50, //altura do personagem
@@ -64,6 +64,33 @@ personagem = {
 
 }
 
+const obstaculos = {
+    _obs: [], //Obstaculos
+    cores: ["#ffbc1c", "#ff1c1c","#ff85e1","#52a7ff", "#78ff5d" ], //Cor dos obstaculos
+
+    colocaObstaculo: function() {
+        this._obs.push({
+            x: 200,
+            largura: 30 + Math.floor(21*Math.random()), //Gera uma distancia aleatoria para os obstaculos
+            altura: 30 + Math.floor(120*Math.random()), //Gera uma altura aleatoria para os obstaculos
+            cor: this.cores[Math.floor(5 * Math.random())],  //Gera cor aleatoria para os obstaculos
+
+        })
+    },
+
+    atualiza() {
+
+    },
+
+    desenha: function() {    
+        for(let i =0, tam = this._obs.length; i < tam; i++){
+            let obs = this._obs[i];
+            ctx.fillStyle = obs.cor; 
+            ctx.fillRect(obs.x, chao.y - obs.altura, obs.largura, obs.altura);
+        }
+    },
+
+}
 
 // ======= COMPONENTES DE PROGRAMAÇÃO ======
 
@@ -119,6 +146,7 @@ function pintaCenario() {
 function desenha() {
     pintaCenario();
     chao.desenha();
+    obstaculos.desenha();
     personagem.desenha();
     
 }
