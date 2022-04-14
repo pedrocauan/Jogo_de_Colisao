@@ -54,7 +54,7 @@ personagem = {
 
     pula: function() {
         //pula  no máximo 3 vezes
-        if(this.qntPulos <= maxPulos){
+        if(this.qntPulos < maxPulos){
             this.velocidade = this.forcaPulo;
             this.qntPulos++;
         }
