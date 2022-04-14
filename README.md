@@ -9,3 +9,4 @@ Um jogo de colisão feito em javascript puro
 - [x] Criação da colisão do personagem com o chão e implementando física da velocidade.
 - [x] Implementando  o movimento de pulo no personagem.
 - [x] Criando obstaculos com cor, distancia e altura aleatórios.
+- [x] Reparando erros.

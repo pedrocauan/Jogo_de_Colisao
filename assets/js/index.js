@@ -10,6 +10,7 @@ const corCenario = "#50beff";
 const corChao = "#ffdf70";
 const corPersonagem = "#ff4e4e";
 const gravidadePersonagem = 1.5; //altera a velocidade do pulo
+const velocidadeObs = 6; //velocidade dos obstaculos do cenário
 
 
 //Aqui serao criados todos os objetos do cenário. ex: Chão, personagem, obstaculo
@@ -67,10 +68,11 @@ const personagem = {
 const obstaculos = {
     _obs: [], //Obstaculos
     cores: ["#ffbc1c", "#ff1c1c","#ff85e1","#52a7ff", "#78ff5d" ], //Cor dos obstaculos
+    
 
     colocaObstaculo: function() {
         this._obs.push({
-            x: 200,
+            x:  LARGURA,
             largura: 30 + Math.floor(21*Math.random()), //Gera uma distancia aleatoria para os obstaculos
             altura: 30 + Math.floor(120*Math.random()), //Gera uma altura aleatoria para os obstaculos
             cor: this.cores[Math.floor(5 * Math.random())],  //Gera cor aleatoria para os obstaculos
@@ -79,10 +81,23 @@ const obstaculos = {
     },
 
     atualiza() {
+        //Faz com que o obstaculos  ande na tela
+        for(let i = 0, tam = this._obs.length;  i < tam; i++){
+            let obs = this._obs[i];
+            obs.x = obs.x - velocidadeObs;
+            //Exclui o objeto assim que ele sai da tela
+            if(obs.x <= -obs.largura){
+                this._obs.shift();
+                tam--;
+                i--;
+            }
+
+        }
 
     },
 
-    desenha: function() {    
+    desenha: function() { 
+        //Desenha todos os obstaculos colocados   
         for(let i =0, tam = this._obs.length; i < tam; i++){
             let obs = this._obs[i];
             ctx.fillStyle = obs.cor; 
@@ -133,6 +148,7 @@ function atualiza() {
     document.addEventListener("mousedown", clique); //repete o evento de click do usuario
     frames++;
     personagem.atualizaStatus();
+    obstaculos.atualiza();
 }
 
 function pintaCenario() {
